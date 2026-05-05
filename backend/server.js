@@ -4,16 +4,19 @@ const express = require("express");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const path = require("path");
 
 const pool = require("./db");
 
 const app = express();
-const PORT = 3000;
-
+const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || "dev_secret_change_me";
 
 app.use(cors());
 app.use(express.json());
+
+// Раздаём frontend-файлы из корня проекта
+app.use(express.static(path.join(__dirname)));
 
 // ===== HELPERS =====
 function getMonthYearFromQuery(req) {
@@ -74,8 +77,11 @@ function authMiddleware(req, res, next) {
 }
 
 // Проверка backend
-app.get("/", (req, res) => {
-  res.send("Finance backend is running");
+app.get("/api/health", (req, res) => {
+  res.json({
+    success: true,
+    message: "Finance backend is running",
+  });
 });
 
 // ===== REGISTER =====
