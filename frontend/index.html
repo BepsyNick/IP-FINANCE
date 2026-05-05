@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+
+  <meta name="theme-color" content="#0f172a" />
+
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Finance" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Finance Control</title>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+
+<body>
+  <div class="app">
+
+    <!-- Login / Register Screen -->
+    <section class="login-screen" id="loginScreen">
+      <div class="login-card">
+        <h1 id="authTitle">Finance Control</h1>
+        <p id="authSubtitle">Войти в аккаунт</p>
+
+        <input type="text" id="loginInput" placeholder="Логин" />
+        <input type="password" id="passwordInput" placeholder="Пароль" />
+
+        <button id="loginBtn">Войти</button>
+
+        <p class="auth-switch" id="authSwitch">
+          Нет аккаунта? Зарегистрироваться
+        </p>
+      </div>
+    </section>
+
+    <!-- Main App -->
+    <main class="main-screen blurred" id="mainScreen">
+
+      <!-- Top Bar -->
+      <header class="top-bar">
+        <div class="top-left">
+          <div>
+            <h2>Мой бюджет</h2>
+            <p class="month-label" id="currentMonthLabel">Текущий месяц</p>
+          </div>
+        </div>
+
+        <div class="top-account">
+          <div class="account-pill">
+            <span class="account-icon">👤</span>
+            <span id="accountLogin">account</span>
+          </div>
+
+          <button class="settings-btn" id="settingsBtn">⚙</button>
+        </div>
+      </header>
+
+      <!-- Summary Cards -->
+      <section class="summary">
+        <div class="summary-card">
+          <span>Осталось на месяц</span>
+          <strong id="monthLeft">0 €</strong>
+          <small id="monthSpent">Потрачено: 0 €</small>
+        </div>
+
+        <div class="summary-card limit-card" id="limitCard">
+          <span>Осталось на сегодня</span>
+          <strong id="dailyLimit">0 €</strong>
+          <small id="todaySpentLabel">Сегодня: 0 / 0 €</small>
+          <small id="nextDailyLimitLabel">Дальше в день: 0 €</small>
+          <small id="daysLeftLabel">Дней осталось: 0</small>
+          <small id="limitOverLabel" class="limit-over-label"></small>
+        </div>
+      </section>
+
+      <!-- Dashboard Layout -->
+      <section class="dashboard-grid">
+
+        <!-- Left: Expenses -->
+        <section class="expenses-panel dashboard-card">
+          <div class="expenses-panel-header">
+            <div>
+              <h3>Последние расходы</h3>
+              <p>История твоих трат</p>
+            </div>
+          </div>
+
+          <div class="expense-filters">
+            <select id="expenseCategoryFilter">
+              <option value="all">Все категории</option>
+              <option value="food">🍔 Еда</option>
+              <option value="transport">🚌 Транспорт</option>
+              <option value="shopping">🛒 Магазины</option>
+              <option value="home">🏠 Дом</option>
+              <option value="fun">🎮 Развлечения</option>
+              <option value="other">📦 Другое</option>
+            </select>
+
+            <select id="expensePeriodFilter">
+              <option value="month">За месяц</option>
+              <option value="today">Сегодня</option>
+              <option value="week">За неделю</option>
+            </select>
+
+            <input
+              type="text"
+              id="expenseSearchInput"
+              placeholder="Поиск по комментарию"
+            />
+
+            <button id="resetExpenseFiltersBtn" class="reset-filter-btn">
+              Сбросить
+            </button>
+          </div>
+
+          <div class="expenses-list" id="expensesList">
+            <!-- расходы появятся тут -->
+          </div>
+        </section>
+
+        <!-- Center: Add Expense -->
+        <section class="expense-form dashboard-card">
+          <div class="form-header">
+            <h3>Добавить расход</h3>
+            <p>Быстро запиши новую трату</p>
+          </div>
+
+          <label class="field-label" for="amountInput">
+            Сумма
+          </label>
+          <input type="number" id="amountInput" placeholder="Сумма €" />
+
+          <div class="quick-amounts">
+            <button type="button" class="quick-amount-btn" data-amount="5">
+              +5€
+            </button>
+            <button type="button" class="quick-amount-btn" data-amount="10">
+              +10€
+            </button>
+            <button type="button" class="quick-amount-btn" data-amount="20">
+              +20€
+            </button>
+          </div>
+
+          <label class="field-label" for="categoryInput">
+            Категория
+          </label>
+          <select id="categoryInput">
+            <option value="food">🍔 Еда</option>
+            <option value="transport">🚌 Транспорт</option>
+            <option value="shopping">🛒 Магазины</option>
+            <option value="home">🏠 Дом</option>
+            <option value="fun">🎮 Развлечения</option>
+            <option value="other">📦 Другое</option>
+          </select>
+
+          <label class="field-label" for="expenseDateInput">
+            Дата расхода
+          </label>
+          <input type="date" id="expenseDateInput" />
+
+          <label class="field-label" for="commentInput">
+            Комментарий
+          </label>
+          <input
+            type="text"
+            id="commentInput"
+            placeholder="Комментарий (необязательно)"
+          />
+
+          <button id="addExpenseBtn">Добавить</button>
+        </section>
+
+        <!-- Right: Analytics -->
+        <section class="analytics-panel dashboard-card">
+          <div class="analytics-header">
+            <h3>Аналитика</h3>
+            <p>Обзор расходов за выбранный месяц</p>
+          </div>
+
+          <div class="analytics-stats">
+            <div class="analytics-stat">
+              <span>Потрачено за месяц</span>
+              <strong id="analyticsTotalSpent">0 €</strong>
+            </div>
+
+            <div class="analytics-stat">
+              <span>Потрачено сегодня</span>
+              <strong id="analyticsTodaySpent">0 €</strong>
+            </div>
+
+            <div class="analytics-stat">
+              <span>Самая дорогая категория</span>
+              <strong id="analyticsTopCategory">—</strong>
+            </div>
+          </div>
+
+          <div class="category-analytics">
+            <h4>Расходы по категориям</h4>
+
+            <div class="category-stats-list" id="categoryStatsList">
+              <!-- аналитика появится тут -->
+            </div>
+          </div>
+        </section>
+
+      </section>
+
+    </main>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Настройки</h3>
+          <button class="modal-close" id="closeSettingsBtn">×</button>
+        </div>
+
+        <div class="settings-section">
+          <h4>Аккаунт</h4>
+
+          <div class="settings-user">
+            <span class="account-icon">👤</span>
+            <strong id="settingsLogin">account</strong>
+          </div>
+
+          <label class="field-label" for="currentPasswordInput">
+            Текущий пароль
+          </label>
+          <input
+            type="password"
+            id="currentPasswordInput"
+            placeholder="Текущий пароль"
+          />
+
+          <label class="field-label" for="newPasswordInput">
+            Новый пароль
+          </label>
+          <input
+            type="password"
+            id="newPasswordInput"
+            placeholder="Новый пароль"
+          />
+
+          <label class="field-label" for="repeatPasswordInput">
+            Повторить пароль
+          </label>
+          <input
+            type="password"
+            id="repeatPasswordInput"
+            placeholder="Повторить пароль"
+          />
+        </div>
+
+        <div class="settings-section">
+          <h4>Бюджет</h4>
+
+          <label class="field-label" for="settingsBudgetInput">
+            Месячный бюджет
+          </label>
+          <input
+            type="number"
+            id="settingsBudgetInput"
+            placeholder="Новая сумма €"
+          />
+        </div>
+
+        <div class="settings-actions">
+          <button id="saveSettingsBtn">Сохранить изменения</button>
+          <button class="logout-btn" id="logoutBtn">Выйти из аккаунта</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Expense Modal -->
+    <div class="modal" id="editExpenseModal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Редактировать расход</h3>
+          <button class="modal-close" id="closeEditExpenseBtn">×</button>
+        </div>
+
+        <label class="field-label" for="editAmountInput">
+          Сумма
+        </label>
+        <input
+          type="number"
+          id="editAmountInput"
+          placeholder="Сумма €"
+        />
+
+        <label class="field-label" for="editCategoryInput">
+          Категория
+        </label>
+        <select id="editCategoryInput">
+          <option value="food">🍔 Еда</option>
+          <option value="transport">🚌 Транспорт</option>
+          <option value="shopping">🛒 Магазины</option>
+          <option value="home">🏠 Дом</option>
+          <option value="fun">🎮 Развлечения</option>
+          <option value="other">📦 Другое</option>
+        </select>
+
+        <label class="field-label" for="editExpenseDateInput">
+          Дата расхода
+        </label>
+        <input type="date" id="editExpenseDateInput" />
+
+        <label class="field-label" for="editCommentInput">
+          Комментарий
+        </label>
+        <input
+          type="text"
+          id="editCommentInput"
+          placeholder="Комментарий (необязательно)"
+        />
+
+        <button id="saveEditExpenseBtn">Сохранить расход</button>
+        <button class="logout-btn" id="deleteEditExpenseBtn">Удалить расход</button>
+      </div>
+    </div>
+
+    <!-- Confirm Modal -->
+    <div class="modal confirm-modal" id="confirmModal">
+      <div class="modal-card confirm-card">
+        <div class="modal-header">
+          <h3 id="confirmTitle">Подтверждение</h3>
+          <button class="modal-close" id="cancelConfirmBtn">×</button>
+        </div>
+
+        <p class="confirm-message" id="confirmMessage">
+          Подтвердить действие?
+        </p>
+
+        <div class="confirm-actions">
+          <button class="confirm-cancel-btn" id="confirmCancelBtn">Отмена</button>
+          <button class="confirm-danger-btn" id="confirmActionBtn">Подтвердить</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Overlay for modals -->
+    <div class="overlay" id="overlay"></div>
+
+  </div>
+
+  <script src="app.js"></script>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker
+          .register("./service-worker.js")
+          .then(() => {
+            console.log("Service Worker registered");
+          })
+          .catch((error) => {
+            console.error("Service Worker registration failed:", error);
+          });
+      });
+    }
+  </script>
+</body>
+</html>
