@@ -105,7 +105,7 @@ const categoryStatsList = document.getElementById("categoryStatsList");
 
 // ===== CATEGORIES =====
 function getCategories() {
-  return window.FINANCE_CATEGORIES;
+  return window.FINANCE_CATEGORIES || [];
 }
 
 function normalizeExpenseCategory(categoryId) {
@@ -149,9 +149,9 @@ function fillCategorySelect(selectElement, includeAllOption = false) {
 }
 
 function fillCategorySelects() {
-  fillCategorySelect(document.getElementById("categoryInput"), false);
-  fillCategorySelect(document.getElementById("editCategoryInput"), false);
-  fillCategorySelect(document.getElementById("expenseCategoryFilter"), true);
+  fillCategorySelect(categoryInput, false);
+  fillCategorySelect(editCategoryInput, false);
+  fillCategorySelect(expenseCategoryFilterInput, true);
 }
 
 // ===== TOAST =====
@@ -709,6 +709,8 @@ function calculate() {
   }, 0);
 
   const left = budget - spent;
+  const monthlyLeft = Math.max(0, left);
+  const monthlyOverspent = Math.max(0, spent - budget);
 
   let todaySpent = 0;
   let todayLimit = 0;
@@ -760,6 +762,8 @@ function calculate() {
 
   return {
     left,
+    monthlyLeft,
+    monthlyOverspent,
     spent,
     todaySpent,
     todayLimit,
@@ -799,6 +803,8 @@ function showDailyLimitWarningIfNeeded() {
 function render() {
   const {
     left,
+    monthlyLeft,
+    monthlyOverspent,
     spent,
     todaySpent,
     todayLimit,
@@ -808,10 +814,12 @@ function render() {
     daysLeft,
   } = calculate();
 
-  document.getElementById("monthLeft").textContent = `${left.toFixed(2)} ${CURRENCY}`;
+  document.getElementById("monthLeft").textContent = `${monthlyLeft.toFixed(2)} ${CURRENCY}`;
   document.getElementById("dailyLimit").textContent = `${todayRemaining.toFixed(2)} ${CURRENCY}`;
 
+  const monthCard = document.getElementById("monthCard");
   const monthSpent = document.getElementById("monthSpent");
+  const monthOverspent = document.getElementById("monthOverspent");
   const todaySpentLabel = document.getElementById("todaySpentLabel");
   const nextDailyLimitLabel = document.getElementById("nextDailyLimitLabel");
   const daysLeftLabel = document.getElementById("daysLeftLabel");
@@ -819,6 +827,22 @@ function render() {
 
   if (monthSpent) {
     monthSpent.textContent = `Потрачено: ${spent.toFixed(2)} ${CURRENCY}`;
+  }
+
+  if (monthOverspent) {
+    if (monthlyOverspent > 0) {
+      monthOverspent.textContent = `Перерасход: ${monthlyOverspent.toFixed(2)} ${CURRENCY}`;
+    } else {
+      monthOverspent.textContent = "";
+    }
+  }
+
+  if (monthCard) {
+    monthCard.classList.remove("bad");
+
+    if (monthlyOverspent > 0) {
+      monthCard.classList.add("bad");
+    }
   }
 
   if (todaySpentLabel) {
