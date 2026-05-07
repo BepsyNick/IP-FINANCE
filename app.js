@@ -149,9 +149,9 @@ function fillCategorySelect(selectElement, includeAllOption = false) {
 }
 
 function fillCategorySelects() {
-  fillCategorySelect(categoryInput, false);
-  fillCategorySelect(editCategoryInput, false);
-  fillCategorySelect(expenseCategoryFilterInput, true);
+  fillCategorySelect(document.getElementById("categoryInput"), false);
+  fillCategorySelect(document.getElementById("editCategoryInput"), false);
+  fillCategorySelect(document.getElementById("expenseCategoryFilter"), true);
 }
 
 // ===== TOAST =====

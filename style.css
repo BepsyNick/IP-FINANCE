@@ -938,3 +938,14 @@ button:active {
 .limit-over-label {
   color: #fecaca !important;
 }
+
+/* MONTH OVERSPEND STATE */
+
+.month-over-label {
+  color: #fecaca !important;
+}
+
+.month-card.bad {
+  border: 1px solid rgba(239, 68, 68, 0.8);
+  box-shadow: 0 0 30px rgba(239, 68, 68, 0.18);
+}
