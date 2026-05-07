@@ -16,7 +16,35 @@ app.use(cors());
 app.use(express.json());
 
 // Раздаём frontend-файлы из корня проекта
-app.use(express.static(path.join(__dirname)));
+app.use((req, res, next) => {
+  const noCachePaths = [
+    "/",
+    "/index.html",
+    "/config.js",
+    "/categories.js",
+    "/app.js",
+    "/style.css",
+    "/service-worker.js",
+    "/manifest.json",
+  ];
+
+  if (req.method === "GET" && noCachePaths.includes(req.path)) {
+    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
+    res.setHeader("Surrogate-Control", "no-store");
+  }
+
+  next();
+});
+
+app.use(
+  express.static(path.join(__dirname), {
+    etag: false,
+    lastModified: false,
+    maxAge: 0,
+  })
+);
 
 // ===== HELPERS =====
 function getMonthYearFromQuery(req) {
