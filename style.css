@@ -107,11 +107,120 @@ select:focus {
 }
 
 select option {
-  color: black;
+  background: #1f2937;
+  color: #ffffff;
 }
 
 input::placeholder {
   color: #94a3b8;
+}
+
+/* CUSTOM SELECTS */
+
+.native-select-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.custom-select {
+  position: relative;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.expense-filters .custom-select {
+  margin-bottom: 0;
+}
+
+.custom-select-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 16px;
+  font-weight: 500;
+  text-align: left;
+}
+
+.custom-select-button:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.custom-select-button:focus {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.18);
+}
+
+.custom-select-value {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.custom-select-arrow {
+  flex: 0 0 auto;
+  color: #cbd5e1;
+  transition: transform 0.18s ease;
+}
+
+.custom-select.open .custom-select-arrow {
+  transform: rotate(180deg);
+}
+
+.custom-select-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 60;
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 8px;
+  border-radius: 22px;
+  background: rgba(15, 23, 42, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(18px);
+}
+
+.custom-select.open .custom-select-menu {
+  display: grid;
+  gap: 4px;
+}
+
+.custom-select-option {
+  width: 100%;
+  padding: 12px 13px;
+  border-radius: 15px;
+  color: #e2e8f0;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.custom-select-option:hover,
+.custom-select-option.active {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.custom-select-menu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-select-menu::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
 }
 
 button {
@@ -948,4 +1057,29 @@ button:active {
 .month-card.bad {
   border: 1px solid rgba(239, 68, 68, 0.8);
   box-shadow: 0 0 30px rgba(239, 68, 68, 0.18);
+}
+
+.app-version-label {
+  display: block;
+  margin-top: 12px;
+  color: #64748b;
+  font-size: 12px;
+  text-align: center;
+}
+
+.confirm-actions-single {
+  grid-template-columns: 1fr;
+}
+
+/* CUSTOM SELECT FINAL OVERRIDES */
+
+.custom-select-button {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  font-weight: 500 !important;
+}
+
+.custom-select-button:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
 }

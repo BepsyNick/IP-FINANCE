@@ -3,6 +3,7 @@ const APP_CONFIG = {
   sessionDurationMs: 60 * 60 * 1000,
   defaultBudget: 600,
   currency: "€",
+  appVersion: "1.0.1",
   monthNames: [
     "Январь",
     "Февраль",
@@ -25,4 +26,8 @@ if (typeof module !== "undefined") {
 
 if (typeof window !== "undefined") {
   window.APP_CONFIG = APP_CONFIG;
+}
+
+if (typeof self !== "undefined") {
+  self.APP_CONFIG = APP_CONFIG;
 }

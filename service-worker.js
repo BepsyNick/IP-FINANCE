@@ -1,11 +1,19 @@
-const CACHE_NAME = "finance-control-v1";
+importScripts("./config.js");
 
-const STATIC_ASSETS = [
+const CACHE_VERSION = self.APP_CONFIG?.appVersion || "dev";
+const CACHE_NAME = `finance-control-${CACHE_VERSION}`;
+
+const APP_SHELL = [
   "./",
   "./index.html",
   "./style.css",
+  "./config.js",
+  "./categories.js",
   "./app.js",
   "./manifest.json",
+  "./icons/favicon-16.png",
+  "./icons/favicon-32.png",
+  "./icons/apple-touch-icon.png",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
 ];
@@ -13,7 +21,7 @@ const STATIC_ASSETS = [
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(STATIC_ASSETS);
+      return cache.addAll(APP_SHELL).catch(() => null);
     })
   );
 
@@ -35,25 +43,25 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
-  const requestUrl = new URL(event.request.url);
+  const request = event.request;
 
-  // API-запросы не кешируем, чтобы расходы/бюджет всегда были актуальными
-  if (requestUrl.pathname.startsWith("/api")) {
-    return;
-  }
+  if (request.method !== "GET") return;
 
-  // HTML-страница: сначала сеть, если нет сети — кеш
-  if (event.request.mode === "navigate") {
-    event.respondWith(
-      fetch(event.request).catch(() => caches.match("./index.html"))
-    );
-    return;
-  }
+  const url = new URL(request.url);
 
-  // Статика: сначала кеш, потом сеть
+  if (url.pathname.startsWith("/api/")) return;
+
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      return cachedResponse || fetch(event.request);
-    })
+    fetch(request)
+      .then((response) => {
+        const responseCopy = response.clone();
+
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(request, responseCopy);
+        });
+
+        return response;
+      })
+      .catch(() => caches.match(request))
   );
 });

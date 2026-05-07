@@ -78,6 +78,7 @@ const settingsBudgetInput = document.getElementById("settingsBudgetInput");
 const saveSettingsBtn = document.getElementById("saveSettingsBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 const currentPasswordInput = document.getElementById("currentPasswordInput");
+const appVersionLabel = document.getElementById("appVersionLabel");
 
 // Edit expense elements
 const editExpenseModal = document.getElementById("editExpenseModal");
@@ -153,6 +154,116 @@ function fillCategorySelects() {
   fillCategorySelect(document.getElementById("editCategoryInput"), false);
   fillCategorySelect(document.getElementById("expenseCategoryFilter"), true);
 }
+
+// ===== CUSTOM SELECT UI =====
+function initCustomSelects() {
+  document.querySelectorAll("select").forEach((selectElement) => {
+    enhanceSelect(selectElement);
+  });
+}
+
+function enhanceSelect(selectElement) {
+  if (!selectElement || selectElement.dataset.customSelectReady === "true") {
+    return;
+  }
+
+  selectElement.dataset.customSelectReady = "true";
+  selectElement.classList.add("native-select-hidden");
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "custom-select";
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "custom-select-button";
+
+  const value = document.createElement("span");
+  value.className = "custom-select-value";
+
+  const arrow = document.createElement("span");
+  arrow.className = "custom-select-arrow";
+  arrow.textContent = "⌄";
+
+  const menu = document.createElement("div");
+  menu.className = "custom-select-menu";
+
+  button.appendChild(value);
+  button.appendChild(arrow);
+  wrapper.appendChild(button);
+  wrapper.appendChild(menu);
+
+  selectElement.insertAdjacentElement("afterend", wrapper);
+
+  selectElement.customSelect = {
+    wrapper,
+    button,
+    value,
+    menu,
+  };
+
+  rebuildCustomSelect(selectElement);
+
+  button.addEventListener("click", (event) => {
+    event.stopPropagation();
+
+    const isOpen = wrapper.classList.contains("open");
+
+    closeCustomSelects();
+
+    if (!isOpen) {
+      wrapper.classList.add("open");
+    }
+  });
+}
+
+function rebuildCustomSelect(selectElement) {
+  if (!selectElement || !selectElement.customSelect) return;
+
+  const { menu } = selectElement.customSelect;
+  menu.innerHTML = "";
+
+  Array.from(selectElement.options).forEach((option) => {
+    const item = document.createElement("div");
+    item.className = "custom-select-option";
+    item.dataset.value = option.value;
+    item.textContent = option.textContent;
+
+    item.addEventListener("click", (event) => {
+      event.stopPropagation();
+
+      selectElement.value = option.value;
+      selectElement.dispatchEvent(new Event("change", { bubbles: true }));
+
+      refreshCustomSelect(selectElement);
+      closeCustomSelects();
+    });
+
+    menu.appendChild(item);
+  });
+
+  refreshCustomSelect(selectElement);
+}
+
+function refreshCustomSelect(selectElement) {
+  if (!selectElement || !selectElement.customSelect) return;
+
+  const { value, menu } = selectElement.customSelect;
+  const selectedOption = selectElement.options[selectElement.selectedIndex];
+
+  value.textContent = selectedOption ? selectedOption.textContent : "";
+
+  menu.querySelectorAll(".custom-select-option").forEach((item) => {
+    item.classList.toggle("active", item.dataset.value === selectElement.value);
+  });
+}
+
+function closeCustomSelects() {
+  document.querySelectorAll(".custom-select.open").forEach((selectElement) => {
+    selectElement.classList.remove("open");
+  });
+}
+
+document.addEventListener("click", closeCustomSelects);
 
 // ===== TOAST =====
 let toastTimer = null;
@@ -390,7 +501,10 @@ function closeConfirm() {
 }
 
 cancelConfirmBtn.onclick = closeConfirm;
-confirmCancelBtn.onclick = closeConfirm;
+
+if (confirmCancelBtn) {
+  confirmCancelBtn.onclick = closeConfirm;
+}
 
 confirmActionBtn.onclick = async () => {
   if (!pendingConfirmAction) return;
@@ -688,6 +802,9 @@ if (resetExpenseFiltersBtn) {
     expenseCategoryFilterInput.value = "all";
     expensePeriodFilterInput.value = "month";
     expenseSearchInput.value = "";
+
+    refreshCustomSelect(expenseCategoryFilterInput);
+    refreshCustomSelect(expensePeriodFilterInput);
 
     renderExpenses();
     showToast("Фильтры сброшены");
@@ -1100,6 +1217,7 @@ function openEditExpense(id) {
 
   editAmountInput.value = Number(expense.amount);
   editCategoryInput.value = normalizeExpenseCategory(expense.category);
+  refreshCustomSelect(editCategoryInput);
   editExpenseDateInput.value = toDateInputValue(new Date(expense.date));
   editCommentInput.value = expense.comment || "";
 
@@ -1178,7 +1296,7 @@ deleteEditExpenseBtn.onclick = async () => {
 
   openConfirm({
     title: "Удалить расход?",
-    message: "Это действие нельзя отменить.",
+    message: "Действие невозвратное.",
     confirmText: "Удалить",
     type: "danger",
     onConfirm: async () => {
@@ -1208,8 +1326,17 @@ async function deleteExpense(id) {
   await loadData();
 }
 
+
+function renderAppVersion() {
+  if (!appVersionLabel) return;
+
+  appVersionLabel.textContent = APP.appVersion ? `Версия ${APP.appVersion}` : "";
+}
+
 // ===== INIT =====
 fillCategorySelects();
+initCustomSelects();
+renderAppVersion();
 setDefaultExpenseDate();
 renderCurrentMonth();
 render();
