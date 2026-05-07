@@ -340,8 +340,10 @@
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
+        const appVersion = window.APP_CONFIG?.appVersion || "dev";
+
         navigator.serviceWorker
-          .register("./service-worker.js")
+          .register(`./service-worker.js?v=${appVersion}`)
           .then(() => {
             console.log("Service Worker registered");
           })

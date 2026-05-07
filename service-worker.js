@@ -1,6 +1,6 @@
-importScripts("./config.js");
+const CACHE_VERSION =
+  new URL(self.location.href).searchParams.get("v") || "dev";
 
-const CACHE_VERSION = self.APP_CONFIG?.appVersion || "dev";
 const CACHE_NAME = `finance-control-${CACHE_VERSION}`;
 
 const APP_SHELL = [
