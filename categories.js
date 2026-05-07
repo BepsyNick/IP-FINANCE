@@ -2,52 +2,52 @@ const FINANCE_CATEGORIES = [
   {
     id: "groceries",
     name: "Продукты",
-    icon: "🛒",
+    icon: "shopping-cart",
   },
   {
     id: "restaurants",
     name: "Рестораны",
-    icon: "🍽️",
+    icon: "utensils-crossed",
   },
   {
     id: "transport",
     name: "Транспорт",
-    icon: "🚌",
+    icon: "bus",
   },
   {
     id: "housing",
     name: "Жильё",
-    icon: "🏠",
+    icon: "house",
   },
   {
     id: "health",
     name: "Здоровье",
-    icon: "❤️",
+    icon: "heart-pulse",
   },
   {
     id: "clothes",
     name: "Одежда",
-    icon: "👕",
+    icon: "shirt",
   },
   {
     id: "subscriptions",
     name: "Подписки",
-    icon: "🔁",
+    icon: "refresh-ccw",
   },
   {
     id: "entertainment",
     name: "Развлечения",
-    icon: "🎮",
+    icon: "gamepad-2",
   },
   {
     id: "travel",
     name: "Путешествия",
-    icon: "✈️",
+    icon: "plane",
   },
   {
     id: "other",
     name: "Другое",
-    icon: "📦",
+    icon: "package",
   },
 ];
 

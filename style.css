@@ -115,6 +115,48 @@ input::placeholder {
   color: #94a3b8;
 }
 
+
+/* LUCIDE ICONS */
+
+.lucide-icon {
+  display: block;
+  flex: 0 0 auto;
+}
+
+.app-icon {
+  line-height: 0;
+}
+
+.custom-select-value-icon,
+.custom-select-option-icon {
+  width: 20px;
+  height: 20px;
+  color: #cbd5e1;
+}
+
+.custom-select-option.active .custom-select-option-icon,
+.custom-select-option:hover .custom-select-option-icon {
+  color: #ffffff;
+}
+
+.category-icon-svg {
+  width: 21px;
+  height: 21px;
+  color: #e2e8f0;
+}
+
+.category-stat-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.category-stat-label .category-icon-svg {
+  width: 18px;
+  height: 18px;
+}
+
 /* CUSTOM SELECTS */
 
 .native-select-hidden {
@@ -160,6 +202,16 @@ input::placeholder {
 }
 
 .custom-select-value {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.custom-select-value span {
   min-width: 0;
   overflow: hidden;
   white-space: nowrap;
@@ -284,7 +336,17 @@ button:active {
 }
 
 .account-icon {
-  font-size: 16px;
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #e2e8f0;
+}
+
+.account-icon .lucide-icon {
+  width: 18px;
+  height: 18px;
 }
 
 #accountLogin {
@@ -296,9 +358,17 @@ button:active {
 .settings-btn {
   width: 46px;
   height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 50%;
   padding: 0;
-  font-size: 20px;
+}
+
+.settings-icon,
+.settings-icon .lucide-icon {
+  width: 20px;
+  height: 20px;
 }
 
 /* SUMMARY */

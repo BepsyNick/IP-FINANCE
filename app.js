@@ -12,6 +12,98 @@ const API_URL = APP.apiUrl;
 const CURRENCY = APP.currency;
 const MONTH_NAMES = APP.monthNames;
 
+const LUCIDE_ICONS = {
+  "shopping-cart": `
+    <circle cx="8" cy="21" r="1"></circle>
+    <circle cx="19" cy="21" r="1"></circle>
+    <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h8.72a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+  `,
+  "utensils-crossed": `
+    <path d="m16 2-2.3 2.3a3 3 0 0 0 0 4.2l1.8 1.8-4.2 4.2"></path>
+    <path d="m15 15 6 6"></path>
+    <path d="m2 2 20 20"></path>
+    <path d="M5 2v7"></path>
+    <path d="M9 2v7"></path>
+    <path d="M7 2v20"></path>
+  `,
+  bus: `
+    <path d="M8 6v6"></path>
+    <path d="M16 6v6"></path>
+    <path d="M2 12h20"></path>
+    <path d="M5 18H3.5A1.5 1.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2h9A5.5 5.5 0 0 1 22 7.5v9A1.5 1.5 0 0 1 20.5 18H19"></path>
+    <path d="M7 22h10"></path>
+    <path d="M6 18v2"></path>
+    <path d="M18 18v2"></path>
+  `,
+  house: `
+    <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
+    <path d="M3 10.5 12 3l9 7.5"></path>
+    <path d="M5 10v11h14V10"></path>
+  `,
+  "heart-pulse": `
+    <path d="M19.5 12.6 12 20l-7.5-7.4A5 5 0 0 1 12 5.2a5 5 0 0 1 7.5 7.4Z"></path>
+    <path d="M3.2 12h3.2l1.6-3 3 7 2-4h4"></path>
+  `,
+  shirt: `
+    <path d="M20.4 6.8 16 4.5a4 4 0 0 1-8 0L3.6 6.8a2 2 0 0 0-.8 2.7L5 13v8h14v-8l2.2-3.5a2 2 0 0 0-.8-2.7Z"></path>
+  `,
+  "refresh-ccw": `
+    <path d="M3 2v6h6"></path>
+    <path d="M21 12a9 9 0 0 0-15-6.7L3 8"></path>
+    <path d="M21 22v-6h-6"></path>
+    <path d="M3 12a9 9 0 0 0 15 6.7l3-2.7"></path>
+  `,
+  "gamepad-2": `
+    <line x1="6" x2="10" y1="11" y2="11"></line>
+    <line x1="8" x2="8" y1="9" y2="13"></line>
+    <line x1="15" x2="15.01" y1="12" y2="12"></line>
+    <line x1="18" x2="18.01" y1="10" y2="10"></line>
+    <path d="M17.3 6H6.7a4 4 0 0 0-3.9 3.2l-1.1 5.5A4 4 0 0 0 5.6 19h.2a4 4 0 0 0 3.1-1.5l1.2-1.5h3.8l1.2 1.5a4 4 0 0 0 3.1 1.5h.2a4 4 0 0 0 3.9-4.8l-1.1-5.5A4 4 0 0 0 17.3 6Z"></path>
+  `,
+  plane: `
+    <path d="M17.8 19.2 16 11l4.5-4.5a2.1 2.1 0 0 0-3-3L13 8 4.8 6.2 3.5 7.5l6.3 3.7-3 3L4 14l-1 1 4 2 2 4 1-1-.2-2.8 3-3 3.7 6.3Z"></path>
+  `,
+  package: `
+    <path d="m7.5 4.3 9 5.2"></path>
+    <path d="M21 8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path>
+    <path d="m3.3 7 8.7 5 8.7-5"></path>
+    <path d="M12 22V12"></path>
+  `,
+  user: `
+    <path d="M19 21a7 7 0 0 0-14 0"></path>
+    <circle cx="12" cy="7" r="4"></circle>
+  `,
+  settings: `
+    <path d="M12.2 2h-.4a2 2 0 0 0-2 1.8l-.2 1.4a7.5 7.5 0 0 0-1.4.8L7 5.4a2 2 0 0 0-2.7.7l-.2.3a2 2 0 0 0 .5 2.8l1.1.8a7.5 7.5 0 0 0 0 1.6l-1.1.8a2 2 0 0 0-.5 2.8l.2.3a2 2 0 0 0 2.7.7l1.2-.6c.4.3.9.6 1.4.8l.2 1.4a2 2 0 0 0 2 1.8h.4a2 2 0 0 0 2-1.8l.2-1.4a7.5 7.5 0 0 0 1.4-.8l1.2.6a2 2 0 0 0 2.7-.7l.2-.3a2 2 0 0 0-.5-2.8l-1.1-.8a7.5 7.5 0 0 0 0-1.6l1.1-.8a2 2 0 0 0 .5-2.8l-.2-.3a2 2 0 0 0-2.7-.7l-1.2.6a7.5 7.5 0 0 0-1.4-.8l-.2-1.4a2 2 0 0 0-2-1.8Z"></path>
+    <circle cx="12" cy="12" r="3"></circle>
+  `,
+  "list-filter": `
+    <path d="M3 6h18"></path>
+    <path d="M7 12h10"></path>
+    <path d="M10 18h4"></path>
+  `,
+};
+
+function getIconSvg(iconName, extraClass = "") {
+  const iconPath = LUCIDE_ICONS[iconName] || LUCIDE_ICONS.package;
+  const className = extraClass ? `lucide-icon ${extraClass}` : "lucide-icon";
+
+  return `
+    <svg class="${className}" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      ${iconPath}
+    </svg>
+  `;
+}
+
+function renderStaticIcons() {
+  document.querySelectorAll("[data-icon]").forEach((element) => {
+    element.innerHTML = getIconSvg(element.dataset.icon);
+  });
+}
+
+
 let currentUser = JSON.parse(localStorage.getItem("currentUser"));
 let authToken = localStorage.getItem("authToken");
 let loginTime = localStorage.getItem("loginTime");
@@ -138,13 +230,15 @@ function fillCategorySelect(selectElement, includeAllOption = false) {
     const allOption = document.createElement("option");
     allOption.value = "all";
     allOption.textContent = "Все категории";
+    allOption.dataset.icon = "list-filter";
     selectElement.appendChild(allOption);
   }
 
   getCategories().forEach((category) => {
     const option = document.createElement("option");
     option.value = category.id;
-    option.textContent = `${category.icon} ${category.name}`;
+    option.textContent = category.name;
+    option.dataset.icon = category.icon;
     selectElement.appendChild(option);
   });
 }
@@ -226,7 +320,10 @@ function rebuildCustomSelect(selectElement) {
     const item = document.createElement("div");
     item.className = "custom-select-option";
     item.dataset.value = option.value;
-    item.textContent = option.textContent;
+    item.innerHTML = `
+      ${getIconSvg(option.dataset.icon || "package", "custom-select-option-icon")}
+      <span>${escapeHtml(option.textContent)}</span>
+    `;
 
     item.addEventListener("click", (event) => {
       event.stopPropagation();
@@ -250,7 +347,14 @@ function refreshCustomSelect(selectElement) {
   const { value, menu } = selectElement.customSelect;
   const selectedOption = selectElement.options[selectElement.selectedIndex];
 
-  value.textContent = selectedOption ? selectedOption.textContent : "";
+  if (selectedOption) {
+    value.innerHTML = `
+      ${getIconSvg(selectedOption.dataset.icon || "package", "custom-select-value-icon")}
+      <span>${escapeHtml(selectedOption.textContent)}</span>
+    `;
+  } else {
+    value.textContent = "";
+  }
 
   menu.querySelectorAll(".custom-select-option").forEach((item) => {
     item.classList.toggle("active", item.dataset.value === selectElement.value);
@@ -1048,7 +1152,7 @@ function renderAnalytics(totalSpent, todaySpent) {
 
     item.innerHTML = `
       <div class="category-stat-top">
-        <span>${getCategoryIcon(category)} ${getCategoryName(category)}</span>
+        <span class="category-stat-label">${getCategoryIcon(category)} ${getCategoryName(category)}</span>
         <strong>${amount.toFixed(2)} ${CURRENCY}</strong>
       </div>
 
@@ -1188,7 +1292,7 @@ function isSameDay(dateA, dateB) {
 }
 
 function getCategoryIcon(categoryId) {
-  return getCategory(categoryId).icon;
+  return getIconSvg(getCategory(categoryId).icon, "category-icon-svg");
 }
 
 function getCategoryName(categoryId) {
@@ -1334,6 +1438,7 @@ function renderAppVersion() {
 }
 
 // ===== INIT =====
+renderStaticIcons();
 fillCategorySelects();
 initCustomSelects();
 renderAppVersion();
