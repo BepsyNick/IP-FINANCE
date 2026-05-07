@@ -20,7 +20,6 @@
   <meta name="apple-mobile-web-app-title" content="Finance" />
 </head>
 
-
 <body>
   <div class="app">
 
@@ -94,15 +93,7 @@
           </div>
 
           <div class="expense-filters">
-            <select id="expenseCategoryFilter">
-              <option value="all">Все категории</option>
-              <option value="food">🍔 Еда</option>
-              <option value="transport">🚌 Транспорт</option>
-              <option value="shopping">🛒 Магазины</option>
-              <option value="home">🏠 Дом</option>
-              <option value="fun">🎮 Развлечения</option>
-              <option value="other">📦 Другое</option>
-            </select>
+            <select id="expenseCategoryFilter"></select>
 
             <select id="expensePeriodFilter">
               <option value="month">За месяц</option>
@@ -153,14 +144,7 @@
           <label class="field-label" for="categoryInput">
             Категория
           </label>
-          <select id="categoryInput">
-            <option value="food">🍔 Еда</option>
-            <option value="transport">🚌 Транспорт</option>
-            <option value="shopping">🛒 Магазины</option>
-            <option value="home">🏠 Дом</option>
-            <option value="fun">🎮 Развлечения</option>
-            <option value="other">📦 Другое</option>
-          </select>
+          <select id="categoryInput"></select>
 
           <label class="field-label" for="expenseDateInput">
             Дата расхода
@@ -300,14 +284,7 @@
         <label class="field-label" for="editCategoryInput">
           Категория
         </label>
-        <select id="editCategoryInput">
-          <option value="food">🍔 Еда</option>
-          <option value="transport">🚌 Транспорт</option>
-          <option value="shopping">🛒 Магазины</option>
-          <option value="home">🏠 Дом</option>
-          <option value="fun">🎮 Развлечения</option>
-          <option value="other">📦 Другое</option>
-        </select>
+        <select id="editCategoryInput"></select>
 
         <label class="field-label" for="editExpenseDateInput">
           Дата расхода
@@ -355,6 +332,8 @@
 
   </div>
 
+  <script src="config.js"></script>
+  <script src="categories.js"></script>
   <script src="app.js"></script>
 
   <script>

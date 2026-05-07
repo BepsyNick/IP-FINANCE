@@ -1,10 +1,22 @@
-const API_URL = "/api";
+if (!window.APP_CONFIG) {
+  throw new Error("APP_CONFIG не загружен. Проверь подключение config.js перед app.js");
+}
+
+if (!window.FINANCE_CATEGORIES) {
+  throw new Error("FINANCE_CATEGORIES не загружены. Проверь подключение categories.js перед app.js");
+}
+
+const APP = window.APP_CONFIG;
+
+const API_URL = APP.apiUrl;
+const CURRENCY = APP.currency;
+const MONTH_NAMES = APP.monthNames;
 
 let currentUser = JSON.parse(localStorage.getItem("currentUser"));
 let authToken = localStorage.getItem("authToken");
 let loginTime = localStorage.getItem("loginTime");
 
-let budget = 600;
+let budget = APP.defaultBudget;
 let expenses = [];
 let isRegisterMode = false;
 let editingExpenseId = null;
@@ -21,21 +33,6 @@ const initialDate = new Date();
 
 let selectedMonth = initialDate.getMonth() + 1;
 let selectedYear = initialDate.getFullYear();
-
-const MONTH_NAMES = [
-  "Январь",
-  "Февраль",
-  "Март",
-  "Апрель",
-  "Май",
-  "Июнь",
-  "Июль",
-  "Август",
-  "Сентябрь",
-  "Октябрь",
-  "Ноябрь",
-  "Декабрь",
-];
 
 function getPeriodQuery() {
   return `month=${selectedMonth}&year=${selectedYear}`;
@@ -106,6 +103,57 @@ const analyticsTodaySpent = document.getElementById("analyticsTodaySpent");
 const analyticsTopCategory = document.getElementById("analyticsTopCategory");
 const categoryStatsList = document.getElementById("categoryStatsList");
 
+// ===== CATEGORIES =====
+function getCategories() {
+  return window.FINANCE_CATEGORIES;
+}
+
+function normalizeExpenseCategory(categoryId) {
+  if (typeof window.normalizeCategoryId === "function") {
+    return window.normalizeCategoryId(categoryId);
+  }
+
+  return categoryId || "other";
+}
+
+function getCategory(categoryId) {
+  if (typeof window.getFinanceCategory === "function") {
+    return window.getFinanceCategory(categoryId);
+  }
+
+  return {
+    id: categoryId || "other",
+    name: "Другое",
+    icon: "📦",
+  };
+}
+
+function fillCategorySelect(selectElement, includeAllOption = false) {
+  if (!selectElement) return;
+
+  selectElement.innerHTML = "";
+
+  if (includeAllOption) {
+    const allOption = document.createElement("option");
+    allOption.value = "all";
+    allOption.textContent = "Все категории";
+    selectElement.appendChild(allOption);
+  }
+
+  getCategories().forEach((category) => {
+    const option = document.createElement("option");
+    option.value = category.id;
+    option.textContent = `${category.icon} ${category.name}`;
+    selectElement.appendChild(option);
+  });
+}
+
+function fillCategorySelects() {
+  fillCategorySelect(document.getElementById("categoryInput"), false);
+  fillCategorySelect(document.getElementById("editCategoryInput"), false);
+  fillCategorySelect(document.getElementById("expenseCategoryFilter"), true);
+}
+
 // ===== TOAST =====
 let toastTimer = null;
 
@@ -134,7 +182,7 @@ function expireSession(message = "Сессия истекла") {
 }
 
 // ===== SESSION =====
-const ONE_HOUR = 60 * 60 * 1000;
+const ONE_HOUR = APP.sessionDurationMs;
 
 function openApp() {
   loginScreen.style.display = "none";
@@ -361,7 +409,7 @@ function openSettings() {
   if (!currentUser) return;
 
   settingsLogin.textContent = currentUser.login;
-  settingsBudgetInput.placeholder = `Текущий бюджет: ${budget} €`;
+  settingsBudgetInput.placeholder = `Текущий бюджет: ${budget} ${CURRENCY}`;
 
   settingsModal.classList.add("open");
   showOverlay();
@@ -404,7 +452,7 @@ async function loadData() {
     const budgetInput = document.getElementById("budgetInput");
 
     if (budgetInput) {
-      budgetInput.placeholder = `Текущий бюджет: ${budget} €`;
+      budgetInput.placeholder = `Текущий бюджет: ${budget} ${CURRENCY}`;
     }
 
     renderCurrentMonth();
@@ -656,8 +704,8 @@ function calculate() {
 
   const lastDay = new Date(selectedYear, selectedMonth, 0).getDate();
 
-  const spent = expenses.reduce((sum, e) => {
-    return sum + Number(e.amount);
+  const spent = expenses.reduce((sum, expense) => {
+    return sum + Number(expense.amount);
   }, 0);
 
   const left = budget - spent;
@@ -742,7 +790,7 @@ function showDailyLimitWarningIfNeeded() {
   lastLimitWarningKey = warningKey;
 
   showToast(
-    `Лимит дня превышен на ${exceededToday.toFixed(2)} €`,
+    `Лимит дня превышен на ${exceededToday.toFixed(2)} ${CURRENCY}`,
     "warning"
   );
 }
@@ -760,8 +808,8 @@ function render() {
     daysLeft,
   } = calculate();
 
-  document.getElementById("monthLeft").textContent = `${left.toFixed(2)} €`;
-  document.getElementById("dailyLimit").textContent = `${todayRemaining.toFixed(2)} €`;
+  document.getElementById("monthLeft").textContent = `${left.toFixed(2)} ${CURRENCY}`;
+  document.getElementById("dailyLimit").textContent = `${todayRemaining.toFixed(2)} ${CURRENCY}`;
 
   const monthSpent = document.getElementById("monthSpent");
   const todaySpentLabel = document.getElementById("todaySpentLabel");
@@ -770,12 +818,12 @@ function render() {
   const limitOverLabel = document.getElementById("limitOverLabel");
 
   if (monthSpent) {
-    monthSpent.textContent = `Потрачено: ${spent.toFixed(2)} €`;
+    monthSpent.textContent = `Потрачено: ${spent.toFixed(2)} ${CURRENCY}`;
   }
 
   if (todaySpentLabel) {
     todaySpentLabel.textContent =
-      `Сегодня: ${todaySpent.toFixed(2)} / ${todayLimit.toFixed(2)} €`;
+      `Сегодня: ${todaySpent.toFixed(2)} / ${todayLimit.toFixed(2)} ${CURRENCY}`;
   }
 
   if (nextDailyLimitLabel) {
@@ -783,7 +831,7 @@ function render() {
       nextDailyLimitLabel.textContent = "Дальше в день: —";
     } else {
       nextDailyLimitLabel.textContent =
-        `Дальше в день: ${nextDailyLimit.toFixed(2)} €`;
+        `Дальше в день: ${nextDailyLimit.toFixed(2)} ${CURRENCY}`;
     }
   }
 
@@ -793,7 +841,7 @@ function render() {
 
   if (limitOverLabel) {
     if (exceededToday > 0) {
-      limitOverLabel.textContent = `Превышено на ${exceededToday.toFixed(2)} €`;
+      limitOverLabel.textContent = `Превышено на ${exceededToday.toFixed(2)} ${CURRENCY}`;
     } else {
       limitOverLabel.textContent = "";
     }
@@ -821,11 +869,11 @@ function render() {
 // ===== ANALYTICS =====
 function renderAnalytics(totalSpent, todaySpent) {
   if (analyticsTotalSpent) {
-    analyticsTotalSpent.textContent = `${totalSpent.toFixed(2)} €`;
+    analyticsTotalSpent.textContent = `${totalSpent.toFixed(2)} ${CURRENCY}`;
   }
 
   if (analyticsTodaySpent) {
-    analyticsTodaySpent.textContent = `${todaySpent.toFixed(2)} €`;
+    analyticsTodaySpent.textContent = `${todaySpent.toFixed(2)} ${CURRENCY}`;
   }
 
   const categoryTotals = getCategoryTotals();
@@ -838,7 +886,7 @@ function renderAnalytics(totalSpent, todaySpent) {
       analyticsTopCategory.textContent = "—";
     } else {
       const [topCategory, topAmount] = sortedCategories[0];
-      analyticsTopCategory.textContent = `${getCategoryName(topCategory)} · ${topAmount.toFixed(2)} €`;
+      analyticsTopCategory.textContent = `${getCategoryName(topCategory)} · ${topAmount.toFixed(2)} ${CURRENCY}`;
     }
   }
 
@@ -860,7 +908,7 @@ function renderAnalytics(totalSpent, todaySpent) {
     item.innerHTML = `
       <div class="category-stat-top">
         <span>${getCategoryIcon(category)} ${getCategoryName(category)}</span>
-        <strong>${amount.toFixed(2)} €</strong>
+        <strong>${amount.toFixed(2)} ${CURRENCY}</strong>
       </div>
 
       <div class="category-stat-bar">
@@ -874,7 +922,7 @@ function renderAnalytics(totalSpent, todaySpent) {
 
 function getCategoryTotals() {
   return expenses.reduce((totals, expense) => {
-    const category = expense.category || "other";
+    const category = normalizeExpenseCategory(expense.category);
 
     if (!totals[category]) {
       totals[category] = 0;
@@ -914,7 +962,7 @@ function renderExpenses() {
       <div class="expense-info">
         <div class="expense-title-row">
           <strong>${categoryName}</strong>
-          <span class="expense-amount">${Number(expense.amount).toFixed(2)} €</span>
+          <span class="expense-amount">${Number(expense.amount).toFixed(2)} ${CURRENCY}</span>
         </div>
 
         <div class="expense-meta-row">
@@ -932,11 +980,12 @@ function getFilteredExpenses() {
   return expenses.filter((expense) => {
     const expenseDate = new Date(expense.date);
     const comment = (expense.comment || "").toLowerCase();
-    const categoryLabel = getCategoryName(expense.category).toLowerCase();
+    const normalizedCategory = normalizeExpenseCategory(expense.category);
+    const categoryLabel = getCategoryName(normalizedCategory).toLowerCase();
 
     const matchesCategory =
       expenseCategoryFilter === "all" ||
-      expense.category === expenseCategoryFilter;
+      normalizedCategory === expenseCategoryFilter;
 
     const matchesSearch =
       !expenseSearchQuery ||
@@ -997,30 +1046,12 @@ function isSameDay(dateA, dateB) {
   );
 }
 
-function getCategoryIcon(category) {
-  const categories = {
-    food: "🍔",
-    transport: "🚌",
-    shopping: "🛒",
-    home: "🏠",
-    fun: "🎮",
-    other: "📦",
-  };
-
-  return categories[category] || "📦";
+function getCategoryIcon(categoryId) {
+  return getCategory(categoryId).icon;
 }
 
-function getCategoryName(category) {
-  const categories = {
-    food: "Еда",
-    transport: "Транспорт",
-    shopping: "Магазины",
-    home: "Дом",
-    fun: "Развлечения",
-    other: "Другое",
-  };
-
-  return categories[category] || "Другое";
+function getCategoryName(categoryId) {
+  return getCategory(categoryId).name;
 }
 
 function escapeHtml(text) {
@@ -1044,7 +1075,7 @@ function openEditExpense(id) {
   editingExpenseId = expense.id;
 
   editAmountInput.value = Number(expense.amount);
-  editCategoryInput.value = expense.category;
+  editCategoryInput.value = normalizeExpenseCategory(expense.category);
   editExpenseDateInput.value = toDateInputValue(new Date(expense.date));
   editCommentInput.value = expense.comment || "";
 
@@ -1154,6 +1185,7 @@ async function deleteExpense(id) {
 }
 
 // ===== INIT =====
+fillCategorySelects();
 setDefaultExpenseDate();
 renderCurrentMonth();
 render();
