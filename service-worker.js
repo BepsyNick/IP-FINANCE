@@ -3,7 +3,7 @@ const CACHE_VERSION =
 
 const CACHE_NAME = `finance-control-${CACHE_VERSION}`;
 
-const APP_SHELL = [
+const STATIC_ASSETS = [
   "./",
   "./index.html",
   "./style.css",
@@ -19,49 +19,82 @@ const APP_SHELL = [
 ];
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(APP_SHELL).catch(() => null);
-    })
-  );
-
   self.skipWaiting();
+
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
+  );
 });
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames
-          .filter((cacheName) => cacheName !== CACHE_NAME)
-          .map((cacheName) => caches.delete(cacheName))
-      );
-    })
+    caches
+      .keys()
+      .then((cacheNames) =>
+        Promise.all(
+          cacheNames
+            .filter((cacheName) => cacheName.startsWith("finance-control-"))
+            .filter((cacheName) => cacheName !== CACHE_NAME)
+            .map((cacheName) => caches.delete(cacheName))
+        )
+      )
+      .then(() => self.clients.claim())
   );
-
-  self.clients.claim();
 });
 
 self.addEventListener("fetch", (event) => {
-  const request = event.request;
+  const requestUrl = new URL(event.request.url);
 
-  if (request.method !== "GET") return;
+  if (requestUrl.origin !== self.location.origin) {
+    return;
+  }
 
-  const url = new URL(request.url);
+  const networkFirstFiles = [
+    "/",
+    "/index.html",
+    "/config.js",
+    "/categories.js",
+    "/app.js",
+    "/style.css",
+    "/service-worker.js",
+  ];
 
-  if (url.pathname.startsWith("/api/")) return;
+  const shouldUseNetworkFirst =
+    event.request.mode === "navigate" ||
+    networkFirstFiles.includes(requestUrl.pathname);
+
+  if (shouldUseNetworkFirst) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          const responseClone = response.clone();
+
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseClone);
+          });
+
+          return response;
+        })
+        .catch(() => caches.match(event.request))
+    );
+
+    return;
+  }
 
   event.respondWith(
-    fetch(request)
-      .then((response) => {
-        const responseCopy = response.clone();
+    caches.match(event.request).then((cachedResponse) => {
+      return (
+        cachedResponse ||
+        fetch(event.request).then((response) => {
+          const responseClone = response.clone();
 
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(request, responseCopy);
-        });
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseClone);
+          });
 
-        return response;
-      })
-      .catch(() => caches.match(request))
+          return response;
+        })
+      );
+    })
   );
 });
