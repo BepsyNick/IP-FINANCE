@@ -43,9 +43,21 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
+  // Не кешируем POST/PUT/DELETE запросы.
+  // Это важно для /api/login, /api/expenses и т.д.
+  if (event.request.method !== "GET") {
+    return;
+  }
+
   const requestUrl = new URL(event.request.url);
 
+  // Не трогаем внешние запросы
   if (requestUrl.origin !== self.location.origin) {
+    return;
+  }
+
+  // Не кешируем backend API
+  if (requestUrl.pathname.startsWith("/api/")) {
     return;
   }
 
