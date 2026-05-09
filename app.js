@@ -174,6 +174,7 @@ const saveSettingsBtn = document.getElementById("saveSettingsBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 const currentPasswordInput = document.getElementById("currentPasswordInput");
 const appVersionLabel = document.getElementById("appVersionLabel");
+const footerVersionLabel = document.getElementById("footerVersionLabel");
 
 // Edit expense elements
 const editExpenseModal = document.getElementById("editExpenseModal");
@@ -1484,9 +1485,15 @@ async function deleteExpense(id) {
 
 
 function renderAppVersion() {
-  if (!appVersionLabel) return;
+  const versionText = APP.appVersion ? `Версия ${APP.appVersion}` : "";
 
-  appVersionLabel.textContent = APP.appVersion ? `Версия ${APP.appVersion}` : "";
+  if (appVersionLabel) {
+    appVersionLabel.textContent = versionText;
+  }
+
+  if (footerVersionLabel) {
+    footerVersionLabel.textContent = versionText;
+  }
 }
 
 // ===== INIT =====

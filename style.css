@@ -2088,3 +2088,170 @@ button:active {
     grid-template-columns: 1fr;
   }
 }
+
+/* FINAL MOBILE NAVIGATION AND FOOTER */
+
+.app-footer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 28px 0 4px;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.mobile-bottom-nav {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .main-screen {
+    padding: 16px 16px 98px;
+  }
+
+  .top-bar {
+    position: relative;
+    top: auto;
+    align-items: flex-start;
+    padding: 8px 0 12px;
+  }
+
+  .top-account {
+    display: none;
+  }
+
+  .dashboard-title-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .dashboard-title-block h2 {
+    font-size: 32px;
+    line-height: 1;
+  }
+
+  .dashboard-subtitle {
+    margin-top: 6px;
+  }
+
+  .app-nav {
+    display: none;
+  }
+
+  .summary {
+    gap: 12px;
+  }
+
+  .summary-card {
+    padding: 20px;
+    border-radius: 26px;
+  }
+
+  .month-card strong {
+    font-size: 46px;
+    line-height: 1.05;
+    letter-spacing: -0.06em;
+  }
+
+  .limit-card strong {
+    font-size: 38px;
+    line-height: 1.05;
+    letter-spacing: -0.05em;
+  }
+
+  .dashboard-grid {
+    gap: 14px;
+  }
+
+  .dashboard-card,
+  .page-card {
+    padding: 18px;
+    border-radius: 26px;
+  }
+
+  .expenses-list,
+  .full-expenses-list {
+    max-height: none;
+  }
+
+  .section-page-header {
+    margin-bottom: 16px;
+  }
+
+  .section-page-header h3 {
+    font-size: 36px;
+    line-height: 1;
+    letter-spacing: -0.06em;
+  }
+
+  .analytics-stats-wide {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-page-header {
+    padding-top: 4px;
+  }
+
+  .profile-back-btn {
+    display: none;
+  }
+
+  .app-footer {
+    margin: 24px 0 10px;
+    padding-bottom: 6px;
+    font-size: 12px;
+  }
+
+  .mobile-bottom-nav {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    z-index: 28;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    padding: 8px;
+    border-radius: 24px;
+    background: rgba(15, 23, 42, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+    backdrop-filter: blur(22px);
+  }
+
+  .mobile-bottom-nav-btn {
+    min-width: 0;
+    padding: 11px 6px;
+    border-radius: 18px;
+    background: transparent;
+    color: #94a3b8;
+    border: none;
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .mobile-bottom-nav-btn:hover {
+    transform: none;
+  }
+
+  .mobile-bottom-nav-btn.active {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+  }
+
+  .modal {
+    padding-bottom: 92px;
+  }
+
+  .toast {
+    bottom: 92px;
+  }
+}
+
+@media (min-width: 768px) {
+  .app-footer {
+    align-items: center;
+  }
+}

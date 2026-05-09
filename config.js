@@ -3,7 +3,7 @@ const APP_CONFIG = {
   sessionDurationMs: 60 * 60 * 1000,
   defaultBudget: 600,
   currency: "€",
-  appVersion: "1.0.22",
+  appVersion: "1.0.23",
   monthNames: [
     "Январь",
     "Февраль",
