@@ -143,7 +143,6 @@ const loginBtn = document.getElementById("loginBtn");
 const loginScreen = document.getElementById("loginScreen");
 const mainScreen = document.getElementById("mainScreen");
 const appScreens = document.querySelectorAll(".app-screen");
-const accountPill = document.getElementById("accountPill");
 
 const authTitle = document.getElementById("authTitle");
 const authFormTitle = document.getElementById("authFormTitle");
@@ -644,16 +643,6 @@ function closeSettings() {
 
 settingsBtn.onclick = openSettings;
 
-if (accountPill) {
-  accountPill.onclick = openSettings;
-
-  accountPill.addEventListener("keydown", (event) => {
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      openSettings();
-    }
-  });
-}
 
 closeSettingsBtn.onclick = closeSettings;
 
@@ -1160,7 +1149,7 @@ function renderAnalytics(totalSpent, todaySpent) {
     return;
   }
 
-  sortedCategories.forEach(([category, amount]) => {
+  sortedCategories.slice(0, 2).forEach(([category, amount]) => {
     const percent = totalSpent > 0 ? (amount / totalSpent) * 100 : 0;
 
     const item = document.createElement("div");
@@ -1199,15 +1188,16 @@ function getCategoryTotals() {
 function renderExpenses() {
   const list = document.getElementById("expensesList");
   const filteredExpenses = getFilteredExpenses();
+  const dashboardExpenses = filteredExpenses.slice(0, 3);
 
   list.innerHTML = "";
 
-  if (filteredExpenses.length === 0) {
+  if (dashboardExpenses.length === 0) {
     list.innerHTML = `<p class="expense-empty">Расходов пока нет</p>`;
     return;
   }
 
-  filteredExpenses.forEach((expense) => {
+  dashboardExpenses.forEach((expense) => {
     const div = document.createElement("div");
     div.className = "expense-item";
     div.onclick = () => openEditExpense(expense.id);

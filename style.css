@@ -382,7 +382,7 @@ button:active {
 .top-account {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  gap: 10px;
 }
 
 .account-pill {
@@ -424,22 +424,19 @@ button:active {
 }
 
 .settings-btn {
-  width: 52px;
-  height: 52px;
+  width: 46px;
+  height: 46px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 18px;
+  border-radius: 50%;
   padding: 0;
-  background: rgba(255, 255, 255, 0.1);
-  color: #e2e8f0;
-  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .settings-icon,
 .settings-icon .lucide-icon {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
 }
 
 /* SUMMARY */
@@ -1832,5 +1829,139 @@ button:active {
 
   .profile-layout {
     grid-template-columns: minmax(240px, 0.78fr) minmax(0, 1.22fr);
+  }
+}
+
+/* DASHBOARD REFINEMENT */
+
+.dashboard-title-block {
+  display: grid;
+  gap: 8px;
+}
+
+.dashboard-title-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.dashboard-title-row h2 {
+  font-size: clamp(32px, 3.1vw, 46px);
+  line-height: 0.95;
+  letter-spacing: -0.06em;
+}
+
+.dashboard-subtitle {
+  color: #64748b;
+  font-size: 14px;
+}
+
+.month-pill {
+  width: fit-content;
+  margin-top: 0;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.top-account {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.settings-btn {
+  width: 52px;
+  height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.settings-icon,
+.settings-icon .lucide-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.month-card #monthLeft {
+  font-size: clamp(50px, 5vw, 72px);
+  line-height: 0.95;
+  letter-spacing: -0.06em;
+}
+
+.month-card {
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#dashboardScreen .expense-filters {
+  display: none;
+}
+
+#dashboardScreen .expenses-list {
+  max-height: none;
+  overflow: visible;
+}
+
+#dashboardScreen .expenses-panel,
+#dashboardScreen .analytics-panel {
+  padding: 24px;
+}
+
+#dashboardScreen .analytics-stats {
+  gap: 10px;
+}
+
+#dashboardScreen .analytics-stat {
+  padding: 16px;
+}
+
+#dashboardScreen .category-analytics {
+  margin-top: 16px;
+}
+
+@media (min-width: 1000px) {
+  #dashboardScreen .dashboard-grid {
+    grid-template-columns: 0.95fr 1fr 0.95fr;
+  }
+
+  #dashboardScreen .expenses-panel,
+  #dashboardScreen .analytics-panel {
+    align-self: start;
+  }
+}
+
+@media (max-width: 767px) {
+  .dashboard-title-row {
+    gap: 10px;
+  }
+
+  .dashboard-title-row h2 {
+    font-size: 32px;
+  }
+
+  .dashboard-subtitle {
+    display: none;
+  }
+
+  .month-card {
+    min-height: 210px;
+  }
+
+  .month-card #monthLeft {
+    font-size: 52px;
   }
 }
