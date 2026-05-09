@@ -1198,3 +1198,8 @@ button:active {
 .custom-select-button:hover {
   background: rgba(255, 255, 255, 0.15) !important;
 }
+
+body.app-loading .login-screen,
+body.app-loading .main-screen {
+  display: none !important;
+}

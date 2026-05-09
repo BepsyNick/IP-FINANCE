@@ -1461,3 +1461,5 @@ setDefaultExpenseDate();
 renderCurrentMonth();
 render();
 initSession();
+
+document.body.classList.remove("app-loading");
