@@ -1480,6 +1480,20 @@ button:active {
   color: #ffffff;
 }
 
+@media (min-width: 768px) {
+  .login-card .auth-card-brand {
+    display: none;
+  }
+
+  .login-card {
+    justify-content: center;
+  }
+
+  .auth-form-heading {
+    margin-bottom: 26px;
+  }
+}
+
 @media (max-width: 767px) {
   .login-screen {
     align-items: center;
