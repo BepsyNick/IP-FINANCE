@@ -1486,11 +1486,13 @@ button:active {
   }
 
   .login-card {
+    min-height: auto;
+    padding: 42px 34px;
     justify-content: center;
   }
 
-  .auth-form-heading {
-    margin-bottom: 26px;
+  .auth-shell {
+    align-items: center;
   }
 }
 
