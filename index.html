@@ -259,68 +259,95 @@
 
       <!-- Profile Screen -->
       <section class="app-screen profile-screen hidden" id="profileScreen" data-screen="profile">
-        <div class="profile-card">
-          <div class="profile-header">
+        <div class="profile-page">
+          <header class="profile-page-header">
+            <button class="profile-back-btn" id="closeSettingsBtn" aria-label="Назад">
+              ← Назад
+            </button>
+
             <div>
+              <p class="profile-eyebrow">Account settings</p>
               <h3>Профиль</h3>
-              <p>Аккаунт и настройки бюджета</p>
+              <p>Аккаунт, безопасность и бюджет</p>
             </div>
-            <button class="modal-close" id="closeSettingsBtn" aria-label="Назад">×</button>
-          </div>
+          </header>
 
-          <div class="settings-section">
-            <h4>Аккаунт</h4>
+          <div class="profile-layout">
+            <aside class="profile-sidebar">
+              <div class="profile-user-card">
+                <div class="profile-user-icon app-icon" data-icon="user"></div>
+                <div>
+                  <span>Активный аккаунт</span>
+                  <strong id="settingsLogin">account</strong>
+                </div>
+              </div>
 
-            <div class="settings-user">
-              <span class="account-icon app-icon" data-icon="user"></span>
-              <strong id="settingsLogin">account</strong>
-            </div>
+              <div class="profile-info-card">
+                <span>Приложение</span>
+                <strong>Finance Control</strong>
+                <small class="app-version-label" id="appVersionLabel"></small>
+              </div>
 
-            <label class="field-label" for="currentPasswordInput">
-              Текущий пароль
-            </label>
-            <input
-              type="password"
-              id="currentPasswordInput"
-              placeholder="Текущий пароль"
-            />
+              <button class="logout-btn profile-logout-btn" id="logoutBtn">
+                Выйти из аккаунта
+              </button>
+            </aside>
 
-            <label class="field-label" for="newPasswordInput">
-              Новый пароль
-            </label>
-            <input
-              type="password"
-              id="newPasswordInput"
-              placeholder="Новый пароль"
-            />
+            <section class="profile-main-card">
+              <div class="profile-section-card">
+                <div class="profile-section-heading">
+                  <h4>Безопасность</h4>
+                  <p>Обнови пароль, если хочешь защитить аккаунт.</p>
+                </div>
 
-            <label class="field-label" for="repeatPasswordInput">
-              Повторить пароль
-            </label>
-            <input
-              type="password"
-              id="repeatPasswordInput"
-              placeholder="Повторить пароль"
-            />
-          </div>
+                <label class="field-label" for="currentPasswordInput">
+                  Текущий пароль
+                </label>
+                <input
+                  type="password"
+                  id="currentPasswordInput"
+                  placeholder="Текущий пароль"
+                />
 
-          <div class="settings-section">
-            <h4>Бюджет</h4>
+                <label class="field-label" for="newPasswordInput">
+                  Новый пароль
+                </label>
+                <input
+                  type="password"
+                  id="newPasswordInput"
+                  placeholder="Новый пароль"
+                />
 
-            <label class="field-label" for="settingsBudgetInput">
-              Месячный бюджет
-            </label>
-            <input
-              type="number"
-              id="settingsBudgetInput"
-              placeholder="Новая сумма €"
-            />
-          </div>
+                <label class="field-label" for="repeatPasswordInput">
+                  Повторить пароль
+                </label>
+                <input
+                  type="password"
+                  id="repeatPasswordInput"
+                  placeholder="Повторить пароль"
+                />
+              </div>
 
-          <div class="settings-actions">
-            <button id="saveSettingsBtn">Сохранить изменения</button>
-            <button class="logout-btn" id="logoutBtn">Выйти из аккаунта</button>
-            <small class="app-version-label" id="appVersionLabel"></small>
+              <div class="profile-section-card">
+                <div class="profile-section-heading">
+                  <h4>Бюджет</h4>
+                  <p>Используется для расчёта остатка на месяц и дневного лимита.</p>
+                </div>
+
+                <label class="field-label" for="settingsBudgetInput">
+                  Месячный бюджет
+                </label>
+                <input
+                  type="number"
+                  id="settingsBudgetInput"
+                  placeholder="Новая сумма €"
+                />
+              </div>
+
+              <div class="profile-actions">
+                <button id="saveSettingsBtn">Сохранить изменения</button>
+              </div>
+            </section>
           </div>
         </div>
       </section>
