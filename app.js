@@ -142,6 +142,8 @@ function renderCurrentMonth() {
 const loginBtn = document.getElementById("loginBtn");
 const loginScreen = document.getElementById("loginScreen");
 const mainScreen = document.getElementById("mainScreen");
+const appScreens = document.querySelectorAll(".app-screen");
+const accountPill = document.getElementById("accountPill");
 
 const authTitle = document.getElementById("authTitle");
 const authSubtitle = document.getElementById("authSubtitle");
@@ -163,7 +165,6 @@ const resetExpenseFiltersBtn = document.getElementById("resetExpenseFiltersBtn")
 
 // Settings elements
 const settingsBtn = document.getElementById("settingsBtn");
-const settingsModal = document.getElementById("settingsModal");
 const closeSettingsBtn = document.getElementById("closeSettingsBtn");
 const settingsLogin = document.getElementById("settingsLogin");
 const settingsBudgetInput = document.getElementById("settingsBudgetInput");
@@ -195,6 +196,13 @@ const analyticsTotalSpent = document.getElementById("analyticsTotalSpent");
 const analyticsTodaySpent = document.getElementById("analyticsTodaySpent");
 const analyticsTopCategory = document.getElementById("analyticsTopCategory");
 const categoryStatsList = document.getElementById("categoryStatsList");
+
+// ===== SCREENS =====
+function showScreen(screenName) {
+  appScreens.forEach((screen) => {
+    screen.classList.toggle("hidden", screen.dataset.screen !== screenName);
+  });
+}
 
 // ===== CATEGORIES =====
 function getCategories() {
@@ -401,7 +409,8 @@ const ONE_HOUR = APP.sessionDurationMs;
 
 function openApp() {
   loginScreen.style.display = "none";
-  mainScreen.classList.remove("blurred");
+  mainScreen.classList.remove("hidden");
+  showScreen("dashboard");
 
   const accountLogin = document.getElementById("accountLogin");
 
@@ -554,14 +563,10 @@ function hideOverlay() {
 }
 
 function hasOpenMainModal() {
-  return (
-    settingsModal.classList.contains("open") ||
-    editExpenseModal.classList.contains("open")
-  );
+  return editExpenseModal.classList.contains("open");
 }
 
 function closeAllModals() {
-  settingsModal.classList.remove("open");
   editExpenseModal.classList.remove("open");
   confirmModal.classList.remove("open");
 
@@ -622,23 +627,33 @@ confirmActionBtn.onclick = async () => {
   }
 };
 
-// ===== SETTINGS MODAL =====
+// ===== PROFILE SCREEN =====
 function openSettings() {
   if (!currentUser) return;
 
   settingsLogin.textContent = currentUser.login;
   settingsBudgetInput.placeholder = `Текущий бюджет: ${budget} ${CURRENCY}`;
 
-  settingsModal.classList.add("open");
-  showOverlay();
+  showScreen("profile");
 }
 
 function closeSettings() {
-  settingsModal.classList.remove("open");
-  hideOverlay();
+  showScreen("dashboard");
 }
 
 settingsBtn.onclick = openSettings;
+
+if (accountPill) {
+  accountPill.onclick = openSettings;
+
+  accountPill.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      openSettings();
+    }
+  });
+}
+
 closeSettingsBtn.onclick = closeSettings;
 
 logoutBtn.onclick = () => {
