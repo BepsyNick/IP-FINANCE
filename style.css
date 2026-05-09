@@ -424,19 +424,22 @@ button:active {
 }
 
 .settings-btn {
-  width: 46px;
-  height: 46px;
+  width: 52px;
+  height: 52px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: 18px;
   padding: 0;
+  background: rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .settings-icon,
 .settings-icon .lucide-icon {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
 }
 
 /* SUMMARY */
