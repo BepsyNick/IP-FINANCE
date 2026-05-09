@@ -1965,3 +1965,126 @@ button:active {
     font-size: 52px;
   }
 }
+
+/* APP SCREEN NAVIGATION */
+
+.app-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 0 18px;
+  padding: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.app-nav-btn {
+  position: relative;
+  width: auto;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: transparent;
+  color: #94a3b8;
+  border: none;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.app-nav-btn:hover,
+.app-nav-btn.active {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.section-page-header {
+  margin: 8px 0 18px;
+}
+
+.section-eyebrow {
+  margin-bottom: 8px;
+  color: #93c5fd;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.section-page-header h3 {
+  font-size: clamp(34px, 4vw, 48px);
+  line-height: 0.98;
+  letter-spacing: -0.06em;
+}
+
+.section-page-header p:not(.section-eyebrow) {
+  margin-top: 8px;
+  color: #94a3b8;
+  font-size: 15px;
+}
+
+.dashboard-panel-header-action {
+  gap: 14px;
+}
+
+.panel-link-btn {
+  width: auto;
+  flex: 0 0 auto;
+  padding: 10px 13px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 13px;
+}
+
+.panel-link-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.page-card {
+  max-width: 920px;
+}
+
+#expensesScreen .page-card,
+#analyticsScreen .page-card {
+  margin-bottom: 28px;
+}
+
+.full-expenses-list {
+  max-height: 620px;
+}
+
+.analytics-stats-wide {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.analytics-category-list {
+  margin-top: 14px;
+}
+
+@media (min-width: 1000px) {
+  #expensesScreen .page-card,
+  #analyticsScreen .page-card {
+    max-width: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .app-nav {
+    width: 100%;
+    overflow-x: auto;
+    justify-content: flex-start;
+    margin-bottom: 16px;
+  }
+
+  .app-nav-btn {
+    flex: 1 0 auto;
+    padding: 10px 14px;
+  }
+
+  .analytics-stats-wide {
+    grid-template-columns: 1fr;
+  }
+}

@@ -99,51 +99,163 @@
       <!-- Dashboard Screen -->
       <section class="app-screen" id="dashboardScreen" data-screen="dashboard">
 
-      <!-- Top Bar -->
-      <header class="top-bar">
-        <div class="top-left">
-          <div class="dashboard-title-block">
-            <div class="dashboard-title-row">
-              <h2>Мой бюджет</h2>
-              <span class="month-label month-pill" id="currentMonthLabel">Текущий месяц</span>
+        <!-- Top Bar -->
+        <header class="top-bar">
+          <div class="top-left">
+            <div class="dashboard-title-block">
+              <div class="dashboard-title-row">
+                <h2>Мой бюджет</h2>
+                <span class="month-label month-pill" id="currentMonthLabel">Текущий месяц</span>
+              </div>
+              <p class="dashboard-subtitle">Главный экран месяца</p>
             </div>
-            <p class="dashboard-subtitle">Главный экран месяца</p>
           </div>
-        </div>
 
-        <div class="top-account">
-          <button class="settings-btn" id="settingsBtn" aria-label="Настройки"><span class="settings-icon app-icon" data-icon="settings"></span></button>
-        </div>
-      </header>
+          <div class="top-account">
+            <button class="settings-btn" id="settingsBtn" aria-label="Настройки"><span class="settings-icon app-icon" data-icon="settings"></span></button>
+          </div>
+        </header>
 
-      <!-- Summary Cards -->
-      <section class="summary">
-        <div class="summary-card month-card" id="monthCard">
-          <span>Осталось на месяц</span>
-          <strong id="monthLeft">0 €</strong>
-          <small id="monthSpent">Потрачено: 0 €</small>
-          <small id="monthOverspent" class="month-over-label"></small>
-        </div>
+        <!-- App Navigation -->
+        <nav class="app-nav" aria-label="Разделы приложения">
+          <button class="app-nav-btn active" type="button" data-screen-target="dashboard">Главная</button>
+          <button class="app-nav-btn" type="button" data-screen-target="expenses">Расходы</button>
+          <button class="app-nav-btn" type="button" data-screen-target="analytics">Аналитика</button>
+        </nav>
 
-        <div class="summary-card limit-card" id="limitCard">
-          <span>Осталось на сегодня</span>
-          <strong id="dailyLimit">0 €</strong>
-          <small id="todaySpentLabel">Сегодня: 0 / 0 €</small>
-          <small id="nextDailyLimitLabel">Дальше в день: 0 €</small>
-          <small id="daysLeftLabel">Дней осталось: 0</small>
-          <small id="limitOverLabel" class="limit-over-label"></small>
-        </div>
+        <!-- Summary Cards -->
+        <section class="summary">
+          <div class="summary-card month-card" id="monthCard">
+            <span>Осталось на месяц</span>
+            <strong id="monthLeft">0 €</strong>
+            <small id="monthSpent">Потрачено: 0 €</small>
+            <small id="monthOverspent" class="month-over-label"></small>
+          </div>
+
+          <div class="summary-card limit-card" id="limitCard">
+            <span>Осталось на сегодня</span>
+            <strong id="dailyLimit">0 €</strong>
+            <small id="todaySpentLabel">Сегодня: 0 / 0 €</small>
+            <small id="nextDailyLimitLabel">Дальше в день: 0 €</small>
+            <small id="daysLeftLabel">Дней осталось: 0</small>
+            <small id="limitOverLabel" class="limit-over-label"></small>
+          </div>
+        </section>
+
+        <!-- Dashboard Layout -->
+        <section class="dashboard-grid">
+
+          <!-- Left: Recent Expenses -->
+          <section class="expenses-panel dashboard-card">
+            <div class="expenses-panel-header dashboard-panel-header-action">
+              <div>
+                <h3>Последние расходы</h3>
+                <p>3 последние записи за выбранный месяц</p>
+              </div>
+              <button class="panel-link-btn" type="button" data-screen-link="expenses">Все</button>
+            </div>
+
+            <div class="expenses-list" id="recentExpensesList">
+              <!-- последние расходы появятся тут -->
+            </div>
+          </section>
+
+          <!-- Center: Add Expense -->
+          <section class="expense-form dashboard-card">
+            <div class="form-header">
+              <h3>Добавить расход</h3>
+              <p>Быстро запиши новую трату</p>
+            </div>
+
+            <label class="field-label" for="amountInput">
+              Сумма
+            </label>
+            <input type="number" id="amountInput" placeholder="Сумма €" />
+
+            <div class="quick-amounts">
+              <button type="button" class="quick-amount-btn" data-amount="5">
+                +5€
+              </button>
+              <button type="button" class="quick-amount-btn" data-amount="10">
+                +10€
+              </button>
+              <button type="button" class="quick-amount-btn" data-amount="20">
+                +20€
+              </button>
+            </div>
+
+            <label class="field-label" for="categoryInput">
+              Категория
+            </label>
+            <select id="categoryInput"></select>
+
+            <label class="field-label" for="expenseDateInput">
+              Дата расхода
+            </label>
+            <input type="date" id="expenseDateInput" />
+
+            <label class="field-label" for="commentInput">
+              Комментарий
+            </label>
+            <input
+              type="text"
+              id="commentInput"
+              placeholder="Комментарий (необязательно)"
+            />
+
+            <button id="addExpenseBtn">Добавить</button>
+          </section>
+
+          <!-- Right: Short Analytics -->
+          <section class="analytics-panel dashboard-card">
+            <div class="analytics-header dashboard-panel-header-action">
+              <div>
+                <h3>Аналитика</h3>
+                <p>Короткий обзор выбранного месяца</p>
+              </div>
+              <button class="panel-link-btn" type="button" data-screen-link="analytics">Подробнее</button>
+            </div>
+
+            <div class="analytics-stats">
+              <div class="analytics-stat">
+                <span>Потрачено за месяц</span>
+                <strong id="dashboardAnalyticsTotalSpent">0 €</strong>
+              </div>
+
+              <div class="analytics-stat">
+                <span>Самая дорогая категория</span>
+                <strong id="dashboardAnalyticsTopCategory">—</strong>
+              </div>
+            </div>
+
+            <div class="category-analytics">
+              <h4>Топ категорий</h4>
+
+              <div class="category-stats-list" id="dashboardCategoryStatsList">
+                <!-- короткая аналитика появится тут -->
+              </div>
+            </div>
+          </section>
+
+        </section>
+
       </section>
 
-      <!-- Dashboard Layout -->
-      <section class="dashboard-grid">
+      <!-- Expenses Screen -->
+      <section class="app-screen hidden" id="expensesScreen" data-screen="expenses">
+        <header class="section-page-header">
+          <div>
+            <p class="section-eyebrow">Expense history</p>
+            <h3>Расходы</h3>
+            <p>История твоих трат и фильтры за выбранный месяц.</p>
+          </div>
+        </header>
 
-        <!-- Left: Expenses -->
-        <section class="expenses-panel dashboard-card">
+        <section class="expenses-panel dashboard-card page-card">
           <div class="expenses-panel-header">
             <div>
-              <h3>Последние расходы</h3>
-              <p>История твоих трат</p>
+              <h3>Все расходы</h3>
+              <p>Фильтруй по категории, периоду или комментарию</p>
             </div>
           </div>
 
@@ -167,65 +279,29 @@
             </button>
           </div>
 
-          <div class="expenses-list" id="expensesList">
+          <div class="expenses-list full-expenses-list" id="expensesList">
             <!-- расходы появятся тут -->
           </div>
         </section>
+      </section>
 
-        <!-- Center: Add Expense -->
-        <section class="expense-form dashboard-card">
-          <div class="form-header">
-            <h3>Добавить расход</h3>
-            <p>Быстро запиши новую трату</p>
-          </div>
-
-          <label class="field-label" for="amountInput">
-            Сумма
-          </label>
-          <input type="number" id="amountInput" placeholder="Сумма €" />
-
-          <div class="quick-amounts">
-            <button type="button" class="quick-amount-btn" data-amount="5">
-              +5€
-            </button>
-            <button type="button" class="quick-amount-btn" data-amount="10">
-              +10€
-            </button>
-            <button type="button" class="quick-amount-btn" data-amount="20">
-              +20€
-            </button>
-          </div>
-
-          <label class="field-label" for="categoryInput">
-            Категория
-          </label>
-          <select id="categoryInput"></select>
-
-          <label class="field-label" for="expenseDateInput">
-            Дата расхода
-          </label>
-          <input type="date" id="expenseDateInput" />
-
-          <label class="field-label" for="commentInput">
-            Комментарий
-          </label>
-          <input
-            type="text"
-            id="commentInput"
-            placeholder="Комментарий (необязательно)"
-          />
-
-          <button id="addExpenseBtn">Добавить</button>
-        </section>
-
-        <!-- Right: Analytics -->
-        <section class="analytics-panel dashboard-card">
-          <div class="analytics-header">
+      <!-- Analytics Screen -->
+      <section class="app-screen hidden" id="analyticsScreen" data-screen="analytics">
+        <header class="section-page-header">
+          <div>
+            <p class="section-eyebrow">Analytics</p>
             <h3>Аналитика</h3>
-            <p>Обзор расходов за выбранный месяц</p>
+            <p>Полный обзор расходов за выбранный месяц.</p>
+          </div>
+        </header>
+
+        <section class="analytics-panel dashboard-card page-card">
+          <div class="analytics-header">
+            <h3>Обзор месяца</h3>
+            <p>Суммы, день и распределение по категориям</p>
           </div>
 
-          <div class="analytics-stats">
+          <div class="analytics-stats analytics-stats-wide">
             <div class="analytics-stat">
               <span>Потрачено за месяц</span>
               <strong id="analyticsTotalSpent">0 €</strong>
@@ -245,14 +321,11 @@
           <div class="category-analytics">
             <h4>Расходы по категориям</h4>
 
-            <div class="category-stats-list" id="categoryStatsList">
+            <div class="category-stats-list analytics-category-list" id="categoryStatsList">
               <!-- аналитика появится тут -->
             </div>
           </div>
         </section>
-
-      </section>
-
       </section>
 
       <!-- Profile Screen -->

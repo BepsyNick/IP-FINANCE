@@ -143,6 +143,8 @@ const loginBtn = document.getElementById("loginBtn");
 const loginScreen = document.getElementById("loginScreen");
 const mainScreen = document.getElementById("mainScreen");
 const appScreens = document.querySelectorAll(".app-screen");
+const screenNavButtons = document.querySelectorAll("[data-screen-target]");
+const screenLinkButtons = document.querySelectorAll("[data-screen-link]");
 
 const authTitle = document.getElementById("authTitle");
 const authFormTitle = document.getElementById("authFormTitle");
@@ -196,13 +198,28 @@ const analyticsTotalSpent = document.getElementById("analyticsTotalSpent");
 const analyticsTodaySpent = document.getElementById("analyticsTodaySpent");
 const analyticsTopCategory = document.getElementById("analyticsTopCategory");
 const categoryStatsList = document.getElementById("categoryStatsList");
+const dashboardAnalyticsTotalSpent = document.getElementById("dashboardAnalyticsTotalSpent");
+const dashboardAnalyticsTopCategory = document.getElementById("dashboardAnalyticsTopCategory");
+const dashboardCategoryStatsList = document.getElementById("dashboardCategoryStatsList");
 
 // ===== SCREENS =====
 function showScreen(screenName) {
   appScreens.forEach((screen) => {
     screen.classList.toggle("hidden", screen.dataset.screen !== screenName);
   });
+
+  screenNavButtons.forEach((button) => {
+    button.classList.toggle("active", button.dataset.screenTarget === screenName);
+  });
 }
+
+screenNavButtons.forEach((button) => {
+  button.onclick = () => showScreen(button.dataset.screenTarget);
+});
+
+screenLinkButtons.forEach((button) => {
+  button.onclick = () => showScreen(button.dataset.screenLink);
+});
 
 // ===== CATEGORIES =====
 function getCategories() {
@@ -1122,6 +1139,10 @@ function renderAnalytics(totalSpent, todaySpent) {
     analyticsTotalSpent.textContent = `${totalSpent.toFixed(2)} ${CURRENCY}`;
   }
 
+  if (dashboardAnalyticsTotalSpent) {
+    dashboardAnalyticsTotalSpent.textContent = `${totalSpent.toFixed(2)} ${CURRENCY}`;
+  }
+
   if (analyticsTodaySpent) {
     analyticsTodaySpent.textContent = `${todaySpent.toFixed(2)} ${CURRENCY}`;
   }
@@ -1132,24 +1153,41 @@ function renderAnalytics(totalSpent, todaySpent) {
   );
 
   if (analyticsTopCategory) {
-    if (sortedCategories.length === 0) {
-      analyticsTopCategory.textContent = "—";
-    } else {
-      const [topCategory, topAmount] = sortedCategories[0];
-      analyticsTopCategory.textContent = `${getCategoryName(topCategory)} · ${topAmount.toFixed(2)} ${CURRENCY}`;
-    }
+    analyticsTopCategory.textContent = getTopCategoryText(sortedCategories);
   }
 
-  if (!categoryStatsList) return;
+  if (dashboardAnalyticsTopCategory) {
+    dashboardAnalyticsTopCategory.textContent = getTopCategoryText(sortedCategories);
+  }
 
-  categoryStatsList.innerHTML = "";
+  renderCategoryStats(categoryStatsList, sortedCategories, totalSpent);
+  renderCategoryStats(dashboardCategoryStatsList, sortedCategories, totalSpent, 2);
+}
+
+function getTopCategoryText(sortedCategories) {
+  if (sortedCategories.length === 0) {
+    return "—";
+  }
+
+  const [topCategory, topAmount] = sortedCategories[0];
+  return `${getCategoryName(topCategory)} · ${topAmount.toFixed(2)} ${CURRENCY}`;
+}
+
+function renderCategoryStats(container, sortedCategories, totalSpent, limit = null) {
+  if (!container) return;
+
+  container.innerHTML = "";
 
   if (sortedCategories.length === 0) {
-    categoryStatsList.innerHTML = `<p class="analytics-empty">Пока нет данных</p>`;
+    container.innerHTML = `<p class="analytics-empty">Пока нет данных</p>`;
     return;
   }
 
-  sortedCategories.slice(0, 2).forEach(([category, amount]) => {
+  const categoriesToRender = limit
+    ? sortedCategories.slice(0, limit)
+    : sortedCategories;
+
+  categoriesToRender.forEach(([category, amount]) => {
     const percent = totalSpent > 0 ? (amount / totalSpent) * 100 : 0;
 
     const item = document.createElement("div");
@@ -1166,7 +1204,7 @@ function renderAnalytics(totalSpent, todaySpent) {
       </div>
     `;
 
-    categoryStatsList.appendChild(item);
+    container.appendChild(item);
   });
 }
 
@@ -1187,17 +1225,25 @@ function getCategoryTotals() {
 // ===== EXPENSES LIST =====
 function renderExpenses() {
   const list = document.getElementById("expensesList");
+  const recentList = document.getElementById("recentExpensesList");
   const filteredExpenses = getFilteredExpenses();
-  const dashboardExpenses = filteredExpenses.slice(0, 3);
+  const recentExpenses = [...expenses].slice(0, 3);
+
+  renderExpenseItems(list, filteredExpenses);
+  renderExpenseItems(recentList, recentExpenses);
+}
+
+function renderExpenseItems(list, items) {
+  if (!list) return;
 
   list.innerHTML = "";
 
-  if (dashboardExpenses.length === 0) {
+  if (items.length === 0) {
     list.innerHTML = `<p class="expense-empty">Расходов пока нет</p>`;
     return;
   }
 
-  dashboardExpenses.forEach((expense) => {
+  items.forEach((expense) => {
     const div = document.createElement("div");
     div.className = "expense-item";
     div.onclick = () => openEditExpense(expense.id);
