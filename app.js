@@ -212,6 +212,18 @@ function showScreen(screenName) {
   screenNavButtons.forEach((button) => {
     button.classList.toggle("active", button.dataset.screenTarget === screenName);
   });
+
+  const dashboardSubtitle = document.querySelector(".dashboard-subtitle");
+  const screenSubtitles = {
+    dashboard: "Главный экран месяца",
+    expenses: "История и фильтры расходов",
+    analytics: "Подробная аналитика месяца",
+    profile: "Профиль и настройки аккаунта",
+  };
+
+  if (dashboardSubtitle) {
+    dashboardSubtitle.textContent = screenSubtitles[screenName] || "Finance Control";
+  }
 }
 
 screenNavButtons.forEach((button) => {

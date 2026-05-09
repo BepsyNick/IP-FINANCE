@@ -2255,3 +2255,43 @@ button:active {
     align-items: center;
   }
 }
+
+/* GLOBAL NAVIGATION FIX */
+
+.app-top-bar {
+  margin-bottom: 12px;
+}
+
+.app-nav {
+  position: sticky;
+  top: 74px;
+  z-index: 7;
+  margin-bottom: 18px;
+  backdrop-filter: blur(16px);
+}
+
+@media (min-width: 768px) {
+  .app-nav {
+    display: inline-flex;
+    width: auto;
+    max-width: 100%;
+  }
+
+  .profile-page {
+    padding-top: 6px;
+  }
+
+  .profile-back-btn {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .app-top-bar {
+    margin-bottom: 10px;
+  }
+
+  .profile-back-btn {
+    display: inline-flex;
+  }
+}
