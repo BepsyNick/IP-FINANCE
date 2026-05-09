@@ -146,6 +146,7 @@ const appScreens = document.querySelectorAll(".app-screen");
 const accountPill = document.getElementById("accountPill");
 
 const authTitle = document.getElementById("authTitle");
+const authFormTitle = document.getElementById("authFormTitle");
 const authSubtitle = document.getElementById("authSubtitle");
 const authSwitch = document.getElementById("authSwitch");
 
@@ -495,13 +496,13 @@ authSwitch.onclick = () => {
   document.getElementById("passwordInput").value = "";
 
   if (isRegisterMode) {
-    authTitle.textContent = "Создать аккаунт";
+    authFormTitle.textContent = "Создать аккаунт";
     authSubtitle.textContent = "Регистрация нового пользователя";
     loginBtn.textContent = "Зарегистрироваться";
     authSwitch.textContent = "Уже есть аккаунт? Войти";
   } else {
-    authTitle.textContent = "Finance Control";
-    authSubtitle.textContent = "Войти в аккаунт";
+    authFormTitle.textContent = "Войти в аккаунт";
+    authSubtitle.textContent = "Продолжи следить за расходами и дневным лимитом.";
     loginBtn.textContent = "Войти";
     authSwitch.textContent = "Нет аккаунта? Зарегистрироваться";
   }
