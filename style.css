@@ -2295,3 +2295,26 @@ button:active {
     display: inline-flex;
   }
 }
+
+/* PAGE POLISH FIXES */
+
+.profile-page-header {
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.profile-page-header > div {
+  flex: 1;
+  text-align: left;
+}
+
+@media (min-width: 768px) {
+  .profile-page-header {
+    margin-bottom: 20px;
+  }
+
+  .section-page-header,
+  .profile-page-header {
+    max-width: 100%;
+  }
+}

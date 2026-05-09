@@ -142,6 +142,7 @@ function renderCurrentMonth() {
 const loginBtn = document.getElementById("loginBtn");
 const loginScreen = document.getElementById("loginScreen");
 const mainScreen = document.getElementById("mainScreen");
+const appPageTitle = document.getElementById("appPageTitle");
 const appScreens = document.querySelectorAll(".app-screen");
 const screenNavButtons = document.querySelectorAll("[data-screen-target]");
 const screenLinkButtons = document.querySelectorAll("[data-screen-link]");
@@ -213,21 +214,42 @@ function showScreen(screenName) {
     button.classList.toggle("active", button.dataset.screenTarget === screenName);
   });
 
-  const dashboardSubtitle = document.querySelector(".dashboard-subtitle");
-  const screenSubtitles = {
+  const pageTitles = {
+    dashboard: "Мой бюджет",
+    expenses: "Расходы",
+    analytics: "Аналитика",
+    profile: "Профиль",
+  };
+
+  const pageSubtitles = {
     dashboard: "Главный экран месяца",
     expenses: "История и фильтры расходов",
     analytics: "Подробная аналитика месяца",
     profile: "Профиль и настройки аккаунта",
   };
 
+  const dashboardSubtitle = document.querySelector(".dashboard-subtitle");
+
+  if (appPageTitle) {
+    appPageTitle.textContent = pageTitles[screenName] || "Finance Control";
+  }
+
   if (dashboardSubtitle) {
-    dashboardSubtitle.textContent = screenSubtitles[screenName] || "Finance Control";
+    dashboardSubtitle.textContent = pageSubtitles[screenName] || "Finance Control";
   }
 }
 
 screenNavButtons.forEach((button) => {
-  button.onclick = () => showScreen(button.dataset.screenTarget);
+  button.onclick = () => {
+    const targetScreen = button.dataset.screenTarget;
+
+    if (targetScreen === "profile") {
+      openSettings();
+      return;
+    }
+
+    showScreen(targetScreen);
+  };
 });
 
 screenLinkButtons.forEach((button) => {
@@ -674,7 +696,9 @@ function closeSettings() {
 settingsBtn.onclick = openSettings;
 
 
-closeSettingsBtn.onclick = closeSettings;
+if (closeSettingsBtn) {
+  closeSettingsBtn.onclick = closeSettings;
+}
 
 logoutBtn.onclick = () => {
   openConfirm({
