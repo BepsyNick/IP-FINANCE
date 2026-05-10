@@ -220,10 +220,10 @@ function showScreen(screenName) {
   };
 
   const pageSubtitles = {
-    dashboard: "Главный экран месяца",
-    expenses: "История и фильтры расходов",
-    analytics: "Подробная аналитика месяца",
-    profile: "Профиль и настройки аккаунта",
+    dashboard: "Главная страница месяца",
+    expenses: "Журнал расходов",
+    analytics: "Обзор выбранного месяца",
+    profile: "Аккаунт и настройки",
   };
 
   const dashboardSubtitle = document.querySelector(".dashboard-subtitle");

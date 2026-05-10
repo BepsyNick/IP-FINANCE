@@ -2348,3 +2348,85 @@ button:active {
     min-height: 190px;
   }
 }
+
+/* FINAL VISUAL POLISH */
+
+.dashboard-title-row {
+  align-items: baseline;
+  gap: 18px;
+}
+
+.month-pill {
+  padding: 0;
+  margin-top: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #cbd5e1;
+  font-size: clamp(24px, 2.1vw, 32px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.app-nav {
+  margin-top: 4px;
+}
+
+.section-page-header,
+.profile-page-header {
+  margin-top: 0;
+}
+
+.profile-screen {
+  padding-top: 0;
+}
+
+.profile-page {
+  padding-top: 0;
+}
+
+.profile-page-header {
+  margin-bottom: 18px;
+}
+
+.summary-card {
+  min-height: 210px;
+  justify-content: flex-start;
+  padding: 34px 38px;
+}
+
+.month-card strong {
+  margin: 16px 0 12px;
+}
+
+.limit-card strong {
+  margin: 14px 0 12px;
+}
+
+@media (min-width: 1000px) {
+  .summary {
+    margin-top: 0;
+  }
+
+  .profile-layout {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .dashboard-title-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .month-pill {
+    font-size: 18px;
+  }
+
+  .summary-card {
+    min-height: auto;
+    padding: 22px;
+  }
+}
