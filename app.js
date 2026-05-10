@@ -145,7 +145,6 @@ const mainScreen = document.getElementById("mainScreen");
 const appPageTitle = document.getElementById("appPageTitle");
 const appScreens = document.querySelectorAll(".app-screen");
 const screenNavButtons = document.querySelectorAll("[data-screen-target]");
-const screenLinkButtons = document.querySelectorAll("[data-screen-link]");
 
 const authTitle = document.getElementById("authTitle");
 const authFormTitle = document.getElementById("authFormTitle");
@@ -167,7 +166,6 @@ const expenseSearchInput = document.getElementById("expenseSearchInput");
 const resetExpenseFiltersBtn = document.getElementById("resetExpenseFiltersBtn");
 
 // Settings elements
-const settingsBtn = document.getElementById("settingsBtn");
 const closeSettingsBtn = document.getElementById("closeSettingsBtn");
 const settingsLogin = document.getElementById("settingsLogin");
 const settingsBudgetInput = document.getElementById("settingsBudgetInput");
@@ -250,10 +248,6 @@ screenNavButtons.forEach((button) => {
 
     showScreen(targetScreen);
   };
-});
-
-screenLinkButtons.forEach((button) => {
-  button.onclick = () => showScreen(button.dataset.screenLink);
 });
 
 // ===== CATEGORIES =====
@@ -693,7 +687,6 @@ function closeSettings() {
   showScreen("dashboard");
 }
 
-settingsBtn.onclick = openSettings;
 
 
 if (closeSettingsBtn) {

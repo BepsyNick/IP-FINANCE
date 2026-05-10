@@ -379,11 +379,6 @@ button:active {
   gap: 12px;
 }
 
-.top-account {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
 
 .account-pill {
   display: flex;
@@ -423,21 +418,7 @@ button:active {
   text-overflow: ellipsis;
 }
 
-.settings-btn {
-  width: 46px;
-  height: 46px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  padding: 0;
-}
 
-.settings-icon,
-.settings-icon .lucide-icon {
-  width: 20px;
-  height: 20px;
-}
 
 /* SUMMARY */
 
@@ -1869,30 +1850,8 @@ button:active {
   font-weight: 700;
 }
 
-.top-account {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
 
-.settings-btn {
-  width: 52px;
-  height: 52px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 18px;
-  padding: 0;
-  background: rgba(255, 255, 255, 0.1);
-  color: #e2e8f0;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-}
 
-.settings-icon,
-.settings-icon .lucide-icon {
-  width: 22px;
-  height: 22px;
-}
 
 .month-card #monthLeft {
   font-size: clamp(50px, 5vw, 72px);
@@ -2117,10 +2076,6 @@ button:active {
     padding: 8px 0 12px;
   }
 
-  .top-account {
-    display: none;
-  }
-
   .dashboard-title-row {
     align-items: flex-start;
     flex-direction: column;
@@ -2316,5 +2271,80 @@ button:active {
   .section-page-header,
   .profile-page-header {
     max-width: 100%;
+  }
+}
+
+/* HEADER AND DASHBOARD CLEANUP */
+
+.top-bar {
+  align-items: flex-start;
+}
+
+.top-left {
+  width: 100%;
+}
+
+.dashboard-title-row {
+  gap: 16px;
+}
+
+.dashboard-title-block h2 {
+  line-height: 0.95;
+}
+
+.month-pill {
+  margin-top: 0;
+  padding: 10px 18px;
+  font-size: 16px;
+  font-weight: 800;
+  border-radius: 999px;
+}
+
+.summary-card {
+  min-height: 230px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.month-card strong {
+  margin: 8px 0 6px;
+}
+
+.limit-card strong {
+  margin: 8px 0 6px;
+}
+
+.expenses-panel-header,
+.analytics-header {
+  align-items: flex-start;
+}
+
+@media (min-width: 1000px) {
+  .top-bar {
+    margin-bottom: 22px;
+  }
+
+  .summary {
+    margin-bottom: 24px;
+  }
+
+  .dashboard-grid {
+    gap: 22px;
+  }
+}
+
+@media (max-width: 767px) {
+  .dashboard-title-row {
+    gap: 10px;
+  }
+
+  .month-pill {
+    padding: 8px 14px;
+    font-size: 14px;
+  }
+
+  .summary-card {
+    min-height: 190px;
   }
 }
